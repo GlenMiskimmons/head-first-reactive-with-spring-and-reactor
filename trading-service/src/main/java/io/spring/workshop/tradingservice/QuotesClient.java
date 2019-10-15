@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
+
 @Component
 public class QuotesClient {
 
@@ -14,7 +16,8 @@ public class QuotesClient {
     }
 
     public Flux<Quote> quotesFeed() {
-        return null;
+        return Flux.interval(Duration.ofSeconds(1))
+                .map(interval -> new Quote("Sample Quote" + interval, 1.00));
     }
 
 }
