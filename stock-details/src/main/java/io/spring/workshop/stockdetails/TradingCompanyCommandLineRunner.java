@@ -21,7 +21,7 @@ public class TradingCompanyCommandLineRunner implements CommandLineRunner {
                 new TradingCompany("Red Hat", "RHT"),
                 new TradingCompany("Vmware", "VMW"))
                 .flatMap(repository::save)
-                .thenMany(repository.findAll())
-                .subscribe(System.out::println);
+                .then()
+                .block();
     }
 }
