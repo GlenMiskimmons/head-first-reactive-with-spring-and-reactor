@@ -5,6 +5,9 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.time.Duration;
 
 @Component
 public class QuotesClient {
@@ -23,6 +26,13 @@ public class QuotesClient {
                 .accept(MediaType.APPLICATION_STREAM_JSON)
                 .retrieve()
                 .bodyToFlux(Quote.class);
+    }
+
+    public Mono<Quote> getLatestQuote(String ticker) {
+        return quotesFeed()
+                .filter(quote -> quote.getTicker().contains(ticker))
+                .next()
+                .timeout(Duration.ofSeconds(15), Mono.just(new Quote(ticker)));
     }
 
 }
